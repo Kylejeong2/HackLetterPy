@@ -53,8 +53,8 @@ def summarize(content):
     completion = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "You are an expert at summarizing "},
-            {"role": "user", "content": "Summarize this text: {}".format(content)}
+            {"role": "system", "content": "You are an expert at summarizing, and identifying key points in text."},
+            {"role": "user", "content": "Summarize this text: ''' {} ''', making sure to capture only the key points and using only 3 sentences.".format(content)}
         ]
     )
     
