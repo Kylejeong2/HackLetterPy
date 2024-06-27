@@ -2,3 +2,5 @@
 venv
 
 website/node_modules/
+
+website/.env

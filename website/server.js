@@ -1,50 +1,46 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const { MongoClient, ServerApiVersion } = require('mongodb');
-// const uri = process.env.MONGODB_CONNECTION;
+const mongoose = require('mongoose');
+const path = require('path')
+require('dotenv').config();
+
+const uri = process.env.MONGODB_CONNECTION; //connection string
 
 const app = express();
-app.use(bodyParser.json());
+const port = 3000;
+app.use(express.static(__dirname))
+app.use(express.urlencoded({ extended: true }))
 
-const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
-  });
+mongoose.connect(uri)
+const db = mongoose.connection;
 
-async function run() {
-  try {
-    await client.connect();
-    const database = client.db('hackletterpy');
-    const collection = database.collection('emails');
+db.once('open', () => { //make sure it's connected
+  console.log('Connected to MongoDB');
+});
 
-    app.post('/submit-email', async (req, res) => {
-      const { email } = req.body;
-      if (!email) {
-        console.log("No email")
-        return res.status(400).json({ message: 'Email is required' });
-      }
-      try {
-        await collection.insertOne({ email });
-        console.log("Success")
-        res.status(200).json({ message: 'Email saved successfully' });
-      } catch (error) {
-        console.log("Error Saving")
-        res.status(500).json({ message: 'Error saving email' });
-      }
-    });
+// Schema and Model
+const emailSchema = new mongoose.Schema({
+  email: String
+})
 
-    app.listen(3000, () => {
-      console.log('Server is running on port 3000');
-    });
+const Email = mongoose.model('Email', emailSchema);
 
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 
-run().catch(console.dir);
+app.post("/post", async (req, res) => {
+  const { email } = req.body
+  const newEmail = new Email({
+    email
+  })
+
+  newEmail.save()
+  console.log(newEmail)
+
+  res.send("Form Submission Successful")
+  res.redirect('/');
+});
+
+app.listen(port, () => {
+  console.log('Server is running on port 3000');
+});
