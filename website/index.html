@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HackLetter</title>
     <link rel="stylesheet" href="styles.css" >
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const response = await fetch('/submit-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email })
+            });
+            const result = await response.json();
+            alert(result.message);
+        });
+    </script>
+ 
 </head>
 <body>
     <div class="container">

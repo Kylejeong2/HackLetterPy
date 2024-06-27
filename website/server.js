@@ -1,33 +1,50 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { Pool } = require('pg');
+const { MongoClient, ServerApiVersion } = require('mongodb');
+// const uri = process.env.MONGODB_CONNECTION;
 
 const app = express();
-const port = 3000;
+app.use(bodyParser.json());
 
-// PostgreSQL connection pool
-const pool = new Pool({
-    user: 'yourusername',
-    host: 'localhost',
-    database: 'yourdatabase',
-    password: 'yourpassword',
-    port: 5432,
-});
-
-
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.post('/submit-email', async (req, res) => {
-    const email = req.body.email;
-    try {
-        await pool.query('INSERT INTO emails (email) VALUES ($1)', [email]);
-        res.send('Email submitted successfully!');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error saving email to database.');
+const client = new MongoClient(uri, {
+    serverApi: {
+      version: ServerApiVersion.v1,
+      strict: true,
+      deprecationErrors: true,
     }
-});
+  });
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/`);
-});
+async function run() {
+  try {
+    await client.connect();
+    const database = client.db('hackletterpy');
+    const collection = database.collection('emails');
+
+    app.post('/submit-email', async (req, res) => {
+      const { email } = req.body;
+      if (!email) {
+        console.log("No email")
+        return res.status(400).json({ message: 'Email is required' });
+      }
+      try {
+        await collection.insertOne({ email });
+        console.log("Success")
+        res.status(200).json({ message: 'Email saved successfully' });
+      } catch (error) {
+        console.log("Error Saving")
+        res.status(500).json({ message: 'Error saving email' });
+      }
+    });
+
+    app.listen(3000, () => {
+      console.log('Server is running on port 3000');
+    });
+
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+
+run().catch(console.dir);
