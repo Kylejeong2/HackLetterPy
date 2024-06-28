@@ -35,10 +35,9 @@ app.post("/post", async (req, res) => {
   })
 
   newEmail.save()
-  console.log(newEmail)
+  console.log(newEmail) //testing
 
   res.send("Form Submission Successful")
-  res.redirect('/');
 });
 
 app.listen(port, () => {
