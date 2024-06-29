@@ -16,6 +16,7 @@ testData = "test"
 info = main()
 summaries, titles, urls = info[0], info[1], info[2]
 
+
 current_date = datetime.now().strftime("%B %d, %Y")
 
 data = {
