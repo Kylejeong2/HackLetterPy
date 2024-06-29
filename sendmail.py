@@ -6,6 +6,7 @@ from datetime import datetime
 
 load_dotenv()
 
+
 secret = os.getenv("MAILJET_SECRET_KEY")
 api = os.getenv('MAILJET_API_KEY')
 
