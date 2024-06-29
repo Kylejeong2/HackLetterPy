@@ -33,17 +33,20 @@ def getStories():
 
     top5stories = [] # collects top 5 stories
     titles = [] #titles of the stories
-    
-    for story in top_5_stories:
+    urls = [] # urls of the stories 
+
+    for i, story in enumerate(top_5_stories):
         if 'url' in story:
             top5stories.append(scrapeContent(story['url']))
+            urls.append(story['url'])
         else:
             top5stories.append(story['text'])
+            urls.append('https://news.ycombinator.com/item?id={}'.format(top_5_stories[i][id]))
 
         titles.append(story["title"])
 
     # print(top5stories)
-    return [top5stories, titles] # array of array of stories and array of titles
+    return [top5stories, titles, urls] # array of array of stories and array of titles
 
 def summarize(content):
     client = OpenAI(
@@ -62,14 +65,14 @@ def summarize(content):
 
 def main():
     info = getStories() # array of the content of top 5 articles
-    storyContent, storyTitles = info[0], info[1]
+    storyContent, storyTitles, urls = info[0], info[1], info[2]
 
     summaries = []
     for i in storyContent:
         summaries.append(summarize(i))
 
     print(summaries)
-    return [summaries, storyTitles]
+    return [summaries, storyTitles, urls]
 
 if __name__ == "__main__":
     main() 
