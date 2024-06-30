@@ -6,7 +6,8 @@ require('dotenv').config();
 const uri = process.env.MONGODB_CONNECTION; //connection string
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 5000;
+
 app.use(express.static(__dirname))
 app.use(express.urlencoded({ extended: true }))
 
@@ -29,15 +30,35 @@ app.get("/", (req, res) => {
 });
 
 app.post("/post", async (req, res) => {
-  const { email } = req.body
+  const { email } = req.body;
+
+  // Check if the email already exists
+  const existingEmail = await Email.findOne({ email });
+
+  if (existingEmail) {
+    return res.status(400).send("Email already exists");
+  }
+
   const newEmail = new Email({
     email
-  })
+  });
 
-  newEmail.save()
-  console.log(newEmail) //testing
+  newEmail.save();
+  console.log(newEmail); //testing
 
-  res.send("Form Submission Successful")
+  res.send("You're in, first Hackletters are coming soon ...");
+});
+
+app.post("/unsubscribe", async (req, res) => {
+  const { email } = req.body;
+  const existingEmail = await Email.findOne({ email });
+
+  if (existingEmail) {
+    await Email.findOneAndDelete({ email });
+    res.send("You're unsubscribed, sorry to see you go. To resubscribe, just visit hackletter.co and re-enter your email.");
+  } else {
+    res.status(404).send("Email not found");
+  }
 });
 
 app.listen(port, () => {

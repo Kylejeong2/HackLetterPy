@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HackLetter</title>
     <link rel="stylesheet" href="styles.css" >
- 
 </head>
 <body>
     <div class="container">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b2/Y_Combinator_logo.svg" alt="YC Logo">
-        <h1>HackLetter</h1>
-        <h2> Love HackerNews, but don't have all day ?</h2>
-        <p>Get the top 5 stories from HackerNews summarized and sent to your inbox every morning. </p>
-        <form method="post" action="/post" >
-            <label for="email">Subscribe to the newsletter:</label>
+        <h1>Sorry to see you go ...</h1>
+        <p>Confirm you want to unsubscribe by entering your email and hitting the button below. </p>
+        <form method="post" action="/unsubscribe" >
+            <label for="email">Unsubscribe to the newsletter:</label>
             <input type="email" id="email" name="email" required>
             <!-- Ensures that only lowercase characters are allowed in the email input -->
-            <Button type="submit">Subscribe</Button>
+            <Button type="submit">Unsubscribe</Button>
         </form>    
     </div>
 </body>
