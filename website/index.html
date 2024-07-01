@@ -13,9 +13,9 @@
         <h1>HackLetter</h1>
         <h2> Love HackerNews, but don't have all day ?</h2>
         <p>Get the top 5 stories from HackerNews summarized and sent to your inbox every morning. </p>
-        <form method="post" action="/post" >
+        <form method="post" action="/post" autocomplete="off">
             <label for="email">Subscribe to the newsletter:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" autocomplete="off" required>
             <!-- Ensures that only lowercase characters are allowed in the email input -->
             <Button type="submit">Subscribe</Button>
         </form>    

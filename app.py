@@ -68,7 +68,9 @@ def main():
     storyContent, storyTitles, urls = info[0], info[1], info[2]
 
     summaries = []
-    for i in storyContent:
+
+    # if story is from twitter - use scrapegraph ai (better than normal scraping for twitter posts)
+    for i in storyContent: #enumerate to get index for url 
         summaries.append(summarize(i))
 
     print(summaries)
