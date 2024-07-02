@@ -24,8 +24,6 @@ db = client['Hackletter']
 collection = db['emails']
 
 emails = [doc['email'] for doc in collection.find({}, {'email': 1})] #list of all emails in the database
-
-
 #print(emails)
 
 #for loop send emails to all of the emails in the list 
@@ -35,7 +33,7 @@ for email in emails:
             {
                 "From": {
                     "Email": "Kyle@hackletter.co",
-                    "Name": "Kyle"
+                    "Name": "Your Daily Hackletter"
                 },
                 "To": [
                     {
