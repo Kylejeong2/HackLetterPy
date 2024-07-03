@@ -37,7 +37,11 @@ def getStories():
 
     for i, story in enumerate(top_5_stories):
         if 'url' in story:
+            #if url is twitter url (twitter or x check both )
+            # use scrapegraph ai 
+            #else
             top5stories.append(scrapeContent(story['url']))
+            #always append url
             urls.append(story['url'])
         else:
             top5stories.append(story['text'])
