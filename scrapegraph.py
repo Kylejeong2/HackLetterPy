@@ -35,4 +35,6 @@ def scrapeGraph(url):
     graph_exec_info = smart_scraper_graph.get_execution_info()
     print(prettify_exec_info(graph_exec_info))
 
+    return result["summary"]
+
 # scrapeGraph("https://x.com/kylejeong21/status/1807661811854127510") 

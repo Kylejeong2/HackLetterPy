@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from openai import OpenAI
-# from flask import Flask, redirect, render_template
+from scrapegraph import scrapeGraph 
 import os
 
 # app = Flask(__name__)
@@ -70,8 +70,12 @@ def main():
     summaries = []
 
     # if story is from twitter - use scrapegraph ai (better than normal scraping for twitter posts)
-    for i in storyContent: #enumerate to get index for url 
-        summaries.append(summarize(i))
+    for i, n in enumerate(storyContent): #enumerate to get index for url 
+        # if the story content is all messed up
+        if "x.com" in urls[i] or "twitter.com" in urls[i] or "beehiiv" in storyContent.lower() or ("400" in storyContent and "bad" in storyContent.lower() and "request" in storyContent.lower()) or ("403" in storyContent and "forbidden" in storyContent.lower()):
+            summaries.append(scrapeGraph(urls[i])) # urls from that index in the list
+        else: 
+            summaries.append(summarize(n))
 
     print(summaries)
     return [summaries, storyTitles, urls]
