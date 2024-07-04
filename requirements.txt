@@ -1,0 +1,9 @@
+openai
+python-dotenv
+pymongo
+requests
+bs4
+mailjet_rest
+langchain
+scrapegraphai
+playwright

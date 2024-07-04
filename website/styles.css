@@ -13,3 +13,7 @@ body {
 img {
   max-width: 10vw;
 }
+
+.spacer {
+  padding: 3vh
+}
